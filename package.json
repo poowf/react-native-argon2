@@ -1,0 +1,31 @@
+{
+  "name": "react-native-argon2",
+  "version": "0.0.2",
+  "description": "React Native Wrapper around Argon2",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/poowf/react-native-argon2"
+  },
+  "keywords": [
+    "argon2",
+    "react-native",
+    "react",
+    "ios",
+    "android",
+    "react-component"
+  ],
+  "author": "zanechua",
+  "contributors": [
+    {
+      "name": "Zane J. Chua",
+      "email": "hi@zanechua.com",
+      "url": "https://zanechua.com"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/poowf/react-native-argon2/issues"
+  },
+  "homepage": "https://github.com/poowf/react-native-argon2#readme"
+}
