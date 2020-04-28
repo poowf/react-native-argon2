@@ -13,6 +13,7 @@ In your code add `import argon2 from 'react-native-argon2';`.
 
 ```javascript
 const result = await argon2(password, salt);
+const { rawHash, encodedHash } = result;
 ```
 
 ## TODO
