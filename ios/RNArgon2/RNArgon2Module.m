@@ -10,7 +10,7 @@ RCT_EXPORT_METHOD(argon2:(NSString *)password salt:(NSString *)salt) resolver:(R
     const char* saltChar = [salt UTF8String];
 
     @try {
-        NSString *result = Argon2.hash(
+        let result = Argon2.hash(
             iterations: 1,
             memoryInKiB: 32 * 1024,
             threads: 1,
