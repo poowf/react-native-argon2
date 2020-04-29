@@ -6,6 +6,11 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4B6E85E12458DE38001AAE1A /* RNArgon2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6E85E02458DE38001AAE1A /* RNArgon2.swift */; };
+		4B6E85E32458DE7F001AAE1A /* RNArgon2Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B6E85E22458DE7F001AAE1A /* RNArgon2Bridge.m */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		B6462EBD1C603E340010294B /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -19,7 +24,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4B41BB0D230D2ED900D95FAA /* RNArgon2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = RNArgon2; sourceTree = "<group>"; };
+		4B6E85DD2458DC3A001AAE1A /* RNArgon2-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNArgon2-Bridging-Header.h"; sourceTree = "<group>"; };
+		4B6E85E02458DE38001AAE1A /* RNArgon2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNArgon2.swift; sourceTree = "<group>"; };
+		4B6E85E22458DE7F001AAE1A /* RNArgon2Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNArgon2Bridge.m; sourceTree = "<group>"; };
 		B6462EBF1C603E340010294B /* libRNArgon2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNArgon2.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -37,8 +44,10 @@
 		B6462EB61C603E340010294B = {
 			isa = PBXGroup;
 			children = (
-				4B41BB0D230D2ED900D95FAA /* RNArgon2 */,
+				4B6E85E22458DE7F001AAE1A /* RNArgon2Bridge.m */,
+				4B6E85E02458DE38001AAE1A /* RNArgon2.swift */,
 				B6462EC01C603E340010294B /* Products */,
+				4B6E85DD2458DC3A001AAE1A /* RNArgon2-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -81,6 +90,7 @@
 				TargetAttributes = {
 					B6462EBE1C603E340010294B = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 1140;
 					};
 				};
 			};
@@ -107,6 +117,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B6E85E12458DE38001AAE1A /* RNArgon2.swift in Sources */,
+				4B6E85E32458DE7F001AAE1A /* RNArgon2Bridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,28 +208,39 @@
 		B6462EC91C603E340010294B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-                    "$(SRCROOT)/../../../React/**",
+					"$(SRCROOT)/../../../React/**",
                     "$(SRCROOT)/../../react-native/React/**",
 				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNArgon2-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
 		B6462ECA1C603E340010294B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-				    "$(SRCROOT)/../../../React/**",
-					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)/../../node_modules/react-native/React/**",
+					"$(SRCROOT)/../react-native/React/**",
 				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNArgon2-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

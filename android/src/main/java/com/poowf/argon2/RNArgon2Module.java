@@ -26,7 +26,7 @@ public class RNArgon2Module extends ReactContextBaseJavaModule {
 
     @Override
     public String getName() {
-        return "RNArgon2Module";
+        return "RNArgon2";
     }
 
     @ReactMethod
