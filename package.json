@@ -1,6 +1,6 @@
 {
   "name": "react-native-argon2",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "React Native Wrapper around Argon2",
   "main": "index.js",
   "repository": {

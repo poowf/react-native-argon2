@@ -16,7 +16,7 @@ class RNArgon2: NSObject {
 
     do {
         let (rawHash, encodedHash) = try Argon2.hash(
-            iterations: 1,
+            iterations: 2,
             memoryInKiB: 32 * 1024,
             threads: 1,
             password: passwordData!,

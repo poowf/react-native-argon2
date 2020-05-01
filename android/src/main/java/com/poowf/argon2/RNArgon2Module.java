@@ -33,10 +33,11 @@ public class RNArgon2Module extends ReactContextBaseJavaModule {
     public void argon2(String password, String salt, Promise promise) {
         try {
             Argon2 argon2 = new Argon2.Builder(Version.V13)
-                    .type(Type.Argon2id)
+                    .iterations(2)
                     .memoryCost(MemoryCost.MiB(32))
                     .parallelism(1)
-                    .iterations(3)
+                    .hashLength(32)
+                    .type(Type.Argon2id)
                     .build();
 
             final byte[] passwordBytes = password.getBytes("UTF-8");
