@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.source_files  = "ios/*.{h,m,swift}"
   s.platform          = :ios, '10.0'
 
-  s.dependency 'React'
+  s.dependency 'React-Core'
   s.dependency 'Argon2'
   s.static_framework = true
 end
