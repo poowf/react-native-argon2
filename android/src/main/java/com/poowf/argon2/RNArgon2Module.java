@@ -30,11 +30,17 @@ public class RNArgon2Module extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void argon2(String password, String salt, Promise promise) {
+    public void argon2(
+        String password, 
+        String salt, 
+        Integer iterations, 
+        Integer memoryCost, 
+        Promise promise
+    ) {
         try {
             Argon2 argon2 = new Argon2.Builder(Version.V13)
-                    .iterations(2)
-                    .memoryCost(MemoryCost.MiB(32))
+                    .iterations(iterations)
+                    .memoryCost(MemoryCost.MiB(memoryCost))
                     .parallelism(1)
                     .hashLength(32)
                     .type(Type.Argon2id)
