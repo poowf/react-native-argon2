@@ -7,6 +7,9 @@
     "type": "git",
     "url": "https://github.com/poowf/react-native-argon2"
   },
+  "scripts": {
+    "release": "standard-version"
+  },
   "keywords": [
     "argon2",
     "react-native",
@@ -24,6 +27,9 @@
     }
   ],
   "license": "MIT",
+  "devDependencies": {
+    "standard-version": "^9.0.0"
+  },
   "bugs": {
     "url": "https://github.com/poowf/react-native-argon2/issues"
   },
