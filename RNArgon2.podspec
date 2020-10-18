@@ -16,6 +16,6 @@ Pod::Spec.new do |s|
   s.platform          = :ios, '10.0'
 
   s.dependency 'React-Core'
-  s.dependency 'Argon2'
+  s.dependency 'SignalArgon2'
   s.static_framework = true
 end

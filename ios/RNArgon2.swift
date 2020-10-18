@@ -1,5 +1,5 @@
 import Foundation
-import Argon2
+import SignalArgon2
 
 @objc(RNArgon2)
 class RNArgon2: NSObject {
