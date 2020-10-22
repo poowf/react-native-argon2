@@ -6,6 +6,7 @@ Pod::Spec.new do |s|
   s.name         = "RNArgon2"
   s.version      = package['version']
   s.summary      = package['description']
+  s.description  = package['description']
   s.license      = package['license']
 
   s.authors      = package['author']
@@ -17,5 +18,4 @@ Pod::Spec.new do |s|
 
   s.dependency 'React-Core'
   s.dependency 'SignalArgon2'
-  s.static_framework = true
 end
