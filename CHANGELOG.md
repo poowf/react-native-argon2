@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://github.com/poowf/react-native-argon2/compare/v1.1.0...v1.1.1) (2020-10-22)
+
+
+### Maintenance
+
+* Update README ([df047a4](https://github.com/poowf/react-native-argon2/commit/df047a43377b5b3dfeac787a163956a45d0d5302))
+
 ## 1.1.0 (2020-10-22)
 
 
