@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.0.0](https://github.com/poowf/react-native-argon2/compare/v1.1.1...v2.0.0) (2020-10-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* Switch to argon2kt for Android due to licensing issues
+* Switch to CatCrypto for iOS due to licensing issues
+
+### Features
+
+* Implement configurable hasher ([099a8d5](https://github.com/poowf/react-native-argon2/commit/099a8d564c74ed5576da177b96dd54eb2b1e3c01))
+
+
+* Switch to argon2kt for Android due to licensing issues ([d3e575b](https://github.com/poowf/react-native-argon2/commit/d3e575b8bc15787a14485533b132820ddeac608d))
+* Switch to CatCrypto for iOS due to licensing issues ([0ad6598](https://github.com/poowf/react-native-argon2/commit/0ad65981891794c5ade69633e2d1eaba0714d5c5))
+
 ### [1.1.1](https://github.com/poowf/react-native-argon2/compare/v1.1.0...v1.1.1) (2020-10-22)
 
 
