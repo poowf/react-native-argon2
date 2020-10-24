@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class RNArgon2Package implements ReactPackage {
-
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
@@ -20,14 +19,8 @@ public class RNArgon2Package implements ReactPackage {
         return modules;
     }
 
-    // Deprecated since React Native 0.47
-    public List<Class<? extends JavaScriptModule>> createJSModules() {
-        return Collections.emptyList();
-    }
-
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactApplicationContext) {
         return Collections.emptyList();
     }
-
 }

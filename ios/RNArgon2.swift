@@ -3,21 +3,22 @@ import CatCrypto
 
 @objc(RNArgon2)
 class RNArgon2: NSObject {
-
   @objc
   static func requiresMainQueueSetup() -> Bool {
     return true
   }
 
   @objc
-  func argon2(_ password: String, salt: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
+  func argon2(_ password: String, salt: String, config: NSDictionary? = nil, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
     let argon2Context = CatArgon2Context.init();
-    argon2Context.iterations = 2;
-    argon2Context.memory = 32 * 1024;
-    argon2Context.parallelism = 1;
+    let configDict = config as! Dictionary<String,Any>
+
+    argon2Context.iterations = configDict["iterations", default: 2 ] as! Int;
+    argon2Context.memory = configDict["memory", default: 32 * 1024 ] as! Int;
+    argon2Context.parallelism = configDict["parallelism", default: 1 ] as! Int;
     argon2Context.salt = salt;
-    argon2Context.hashLength = 32;
-    argon2Context.mode = .argon2id;
+    argon2Context.hashLength = configDict["hashLength", default: 32 ] as! Int;
+    argon2Context.mode = getArgon2Mode(mode: configDict["mode", default: "argon2id" ] as! String);
 
     let argon2Crypto = CatArgon2Crypto.init(context: argon2Context);
     let encodedResult = argon2Crypto.hash(password: password);
@@ -41,4 +42,23 @@ class RNArgon2: NSObject {
     resolve(resultDictionary);
   }
 
+  func getArgon2Mode(mode: String) -> CatArgon2Mode {
+    var selectedMode: CatArgon2Mode;
+    switch mode {
+        case "argon2d":
+            selectedMode = CatArgon2Mode.argon2d;
+            break;
+        case "argon2i":
+            selectedMode = CatArgon2Mode.argon2i;
+            break;
+        case "argon2id":
+            selectedMode = CatArgon2Mode.argon2id;
+            break;
+        default:
+            selectedMode = CatArgon2Mode.argon2id;
+            break;
+    }
+
+    return selectedMode;
+  }
 }
