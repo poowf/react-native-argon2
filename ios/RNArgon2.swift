@@ -1,59 +1,64 @@
 import Foundation
-import SignalArgon2
+import CatCrypto
 
 @objc(RNArgon2)
 class RNArgon2: NSObject {
-
   @objc
   static func requiresMainQueueSetup() -> Bool {
     return true
   }
 
   @objc
-  func argon2(_ password: String, salt: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
-    let passwordData: Data? = password.data(using: .utf8)
-    let saltData: Data? = salt.data(using: .utf8)
+  func argon2(_ password: String, salt: String, config: NSDictionary? = nil, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
+    let argon2Context = CatArgon2Context.init();
+    let configDict = config as! Dictionary<String,Any>
 
-    do {
-        let (rawHash, encodedHash) = try Argon2.hash(
-            iterations: 2,
-            memoryInKiB: 32 * 1024,
-            threads: 1,
-            password: passwordData!,
-            salt: saltData!,
-            desiredLength: 32,
-            variant: .id,
-            version: .v13
-        )
+    argon2Context.iterations = configDict["iterations", default: 2 ] as! Int;
+    argon2Context.memory = configDict["memory", default: 32 * 1024 ] as! Int;
+    argon2Context.parallelism = configDict["parallelism", default: 1 ] as! Int;
+    argon2Context.salt = salt;
+    argon2Context.hashLength = configDict["hashLength", default: 32 ] as! Int;
+    argon2Context.mode = getArgon2Mode(mode: configDict["mode", default: "argon2id" ] as! String);
 
-        let resultDictionary: NSDictionary = [
-            "rawHash" : rawHash.hexEncodedString(),
-            "encodedHash" : encodedHash,
-        ]
-        resolve(resultDictionary);
-    }
-    catch {
+    let argon2Crypto = CatArgon2Crypto.init(context: argon2Context);
+    let encodedResult = argon2Crypto.hash(password: password);
+
+    // Set the hasher to hash as raw since encoded is the default
+    argon2Crypto.context.hashResultType = .hashRaw;
+    let rawResult = argon2Crypto.hash(password: password);
+
+    if ((rawResult.error) != nil || (encodedResult.error) != nil) {
         let error = NSError(domain: "com.poowf.argon2", code: 200, userInfo: ["Error reason": "Failed to generate argon2 hash"])
         reject("E_ARGON2", "Failed to generate argon2 hash", error)
     }
+
+    let rawHash = rawResult.hexStringValue();
+    let encodedHash = encodedResult.stringValue();
+
+    let resultDictionary: NSDictionary = [
+        "rawHash" : rawHash,
+        "encodedHash" : encodedHash,
+    ]
+    resolve(resultDictionary);
   }
 
-}
-
-extension Data {
-    struct HexEncodingOptions: OptionSet {
-        let rawValue: Int
-        static let upperCase = HexEncodingOptions(rawValue: 1 << 0)
+  func getArgon2Mode(mode: String) -> CatArgon2Mode {
+    var selectedMode: CatArgon2Mode;
+    switch mode {
+        case "argon2d":
+            selectedMode = CatArgon2Mode.argon2d;
+            break;
+        case "argon2i":
+            selectedMode = CatArgon2Mode.argon2i;
+            break;
+        case "argon2id":
+            selectedMode = CatArgon2Mode.argon2id;
+            break;
+        default:
+            selectedMode = CatArgon2Mode.argon2id;
+            break;
     }
 
-    func hexEncodedString(options: HexEncodingOptions = []) -> String {
-        let hexDigits = Array((options.contains(.upperCase) ? "0123456789ABCDEF" : "0123456789abcdef").utf16)
-        var chars: [unichar] = []
-        chars.reserveCapacity(2 * count)
-        for byte in self {
-            chars.append(hexDigits[Int(byte / 16)])
-            chars.append(hexDigits[Int(byte % 16)])
-        }
-        return String(utf16CodeUnits: chars, count: chars.count)
-    }
+    return selectedMode;
+  }
 }
