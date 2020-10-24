@@ -33,5 +33,5 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'org.signal:argon2:13.1@aar'
+    implementation 'com.lambdapioneer.argon2kt:argon2kt:1.1.0'
 }

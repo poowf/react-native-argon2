@@ -31,4 +31,3 @@ public class RNArgon2Package implements ReactPackage {
     }
 
 }
-

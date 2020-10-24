@@ -11,10 +11,9 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.bridge.Promise;
 
-import org.signal.argon2.Argon2;
-import org.signal.argon2.Version;
-import org.signal.argon2.Type;
-import org.signal.argon2.MemoryCost;
+import com.lambdapioneer.argon2kt.Argon2Kt;
+import com.lambdapioneer.argon2kt.Argon2KtResult;
+import com.lambdapioneer.argon2kt.Argon2Mode;
 
 public class RNArgon2Module extends ReactContextBaseJavaModule {
     private ReactContext mReactContext;
@@ -32,27 +31,33 @@ public class RNArgon2Module extends ReactContextBaseJavaModule {
     @ReactMethod
     public void argon2(String password, String salt, Promise promise) {
         try {
-            Argon2 argon2 = new Argon2.Builder(Version.V13)
-                    .iterations(2)
-                    .memoryCost(MemoryCost.MiB(32))
-                    .parallelism(1)
-                    .hashLength(32)
-                    .type(Type.Argon2id)
-                    .build();
-
             final byte[] passwordBytes = password.getBytes("UTF-8");
             final byte[] saltBytes = salt.getBytes("UTF-8");
+            Integer iterations = new Integer(2);
+            Integer memory = new Integer(32 * 1024);
+            Integer parallelism = new Integer(1);
+            Integer hashLength = new Integer(32);
 
-            Argon2.Result result = argon2.hash(passwordBytes, saltBytes);
+            final Argon2Kt argon2Kt = new Argon2Kt();
+
+            final Argon2KtResult hashResult = argon2Kt.hash(
+                    Argon2Mode.ARGON2_ID,
+                    passwordBytes,
+                    saltBytes,
+                    iterations,
+                    memory,
+                    parallelism,
+                    hashLength);
+            final String rawHash = hashResult.rawHashAsHexadecimal(false);
+            final String encodedHash = hashResult.encodedOutputAsString();
 
             WritableMap resultMap = new WritableNativeMap();
-            resultMap.putString("rawHash", result.getHashHex());
-            resultMap.putString("encodedHash", result.getEncoded());
+            resultMap.putString("rawHash", rawHash);
+            resultMap.putString("encodedHash", encodedHash);
 
             promise.resolve(resultMap);
         } catch (Exception exception) {
             promise.reject("Failed to generate argon2 hash", exception);
         }
-
     }
 }
