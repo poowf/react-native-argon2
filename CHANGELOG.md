@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.0.1](https://github.com/poowf/react-native-argon2/compare/v2.0.0...v2.0.1) (2021-06-20)
+
+
+### Maintenance
+
+* bump packages ([0458d07](https://github.com/poowf/react-native-argon2/commit/0458d07ae5059d806003fda685554fa7193548a6))
+
 ## [2.0.0](https://github.com/poowf/react-native-argon2/compare/v1.1.1...v2.0.0) (2020-10-24)
 
 
