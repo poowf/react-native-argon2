@@ -28,7 +28,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "standard-version": "^9.3.0"
+    "standard-version": "^9.5.0"
   },
   "bugs": {
     "url": "https://github.com/poowf/react-native-argon2/issues"
