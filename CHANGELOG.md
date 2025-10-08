@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.0.0](https://github.com/poowf/react-native-argon2/compare/v2.0.1...v3.0.0) (2025-10-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* Bumped the min-sdk version
+* Updated argon2kt version to fix 16kb page size issue
+
+### Maintenance
+
+* Bumped the min-sdk version ([9d802a8](https://github.com/poowf/react-native-argon2/commit/9d802a8e970b5092bdecfb10ffc9fb9ae4049835))
+* update yarn.lock ([9345aaa](https://github.com/poowf/react-native-argon2/commit/9345aaa447263e07a0afa589ab88a7b6b9bb561c))
+* Updated argon2kt version to fix 16kb page size issue ([010c5fe](https://github.com/poowf/react-native-argon2/commit/010c5fe9a92d4d222bcb25f4f1baa7cbedfbb04b))
+* use maven central instead of jcenter ([269c64e](https://github.com/poowf/react-native-argon2/commit/269c64e91b188222ad60790708d4d9c36a3852a6))
+* use pnpm instead of yarn ([f95764f](https://github.com/poowf/react-native-argon2/commit/f95764fa0a08fbae4e5bd463e66c5734f68d91c5))
+
 ### [2.0.1](https://github.com/poowf/react-native-argon2/compare/v2.0.0...v2.0.1) (2021-06-20)
 
 
