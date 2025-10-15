@@ -11,21 +11,26 @@ class RNArgon2: NSObject {
   @objc
   func argon2(_ password: String, salt: String, config: NSDictionary? = nil, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
     let configDict = config as! Dictionary<String,Any>
-    
+
     let iterations = configDict["iterations", default: 2 ] as! Int
     let memory = configDict["memory", default: 32 * 1024 ] as! Int
     let parallelism = configDict["parallelism", default: 1 ] as! Int
     let hashLength = configDict["hashLength", default: 32 ] as! Int
     let mode = getArgon2Mode(mode: configDict["mode", default: "argon2i"] as! String)
-    
-    // Convert hex salt string to Data for binary salt support
-    guard let saltData = Data(hexString: salt) else {
+
+    let saltEncoding = configDict["saltEncoding"] as? String ?? "utf8"
+    let saltData: Data?
+    if saltEncoding.lowercased() == "hex" {
+      saltData = Data(hexString: salt)
+    } else {
+      saltData = salt.data(using: .utf8)
+    }
+    guard let validSaltData = saltData else {
       let error = NSError(domain: "com.poowf.argon2", code: 400, userInfo: ["Error reason": "Invalid salt format"])
       reject("E_ARGON2", "Invalid salt format", error)
       return
     }
-    
-    let saltObject = Salt(bytes: saltData)
+    let saltObject = Salt(bytes: validSaltData)
     
     do {
       // Generate hash using Argon2Swift
