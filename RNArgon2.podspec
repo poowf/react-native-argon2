@@ -17,5 +17,5 @@ Pod::Spec.new do |s|
   s.platform          = :ios, '10.0'
 
   s.dependency 'React-Core'
-  s.dependency 'CatCrypto'
+  s.dependency 'Argon2Swift', '~> 1.0'
 end

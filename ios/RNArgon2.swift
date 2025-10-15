@@ -1,5 +1,5 @@
 import Foundation
-import CatCrypto
+import Argon2Swift
 
 @objc(RNArgon2)
 class RNArgon2: NSObject {
@@ -10,55 +10,84 @@ class RNArgon2: NSObject {
 
   @objc
   func argon2(_ password: String, salt: String, config: NSDictionary? = nil, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
-    let argon2Context = CatArgon2Context.init();
     let configDict = config as! Dictionary<String,Any>
-
-    argon2Context.iterations = configDict["iterations", default: 2 ] as! Int;
-    argon2Context.memory = configDict["memory", default: 32 * 1024 ] as! Int;
-    argon2Context.parallelism = configDict["parallelism", default: 1 ] as! Int;
-    argon2Context.salt = salt;
-    argon2Context.hashLength = configDict["hashLength", default: 32 ] as! Int;
-    argon2Context.mode = getArgon2Mode(mode: configDict["mode", default: "argon2id" ] as! String);
-
-    let argon2Crypto = CatArgon2Crypto.init(context: argon2Context);
-    let encodedResult = argon2Crypto.hash(password: password);
-
-    // Set the hasher to hash as raw since encoded is the default
-    argon2Crypto.context.hashResultType = .hashRaw;
-    let rawResult = argon2Crypto.hash(password: password);
-
-    if ((rawResult.error) != nil || (encodedResult.error) != nil) {
-        let error = NSError(domain: "com.poowf.argon2", code: 200, userInfo: ["Error reason": "Failed to generate argon2 hash"])
-        reject("E_ARGON2", "Failed to generate argon2 hash", error)
+    
+    let iterations = configDict["iterations", default: 2 ] as! Int
+    let memory = configDict["memory", default: 32 * 1024 ] as! Int
+    let parallelism = configDict["parallelism", default: 1 ] as! Int
+    let hashLength = configDict["hashLength", default: 32 ] as! Int
+    let mode = getArgon2Mode(mode: configDict["mode", default: "argon2i"] as! String)
+    
+    // Convert hex salt string to Data for binary salt support
+    guard let saltData = Data(hexString: salt) else {
+      let error = NSError(domain: "com.poowf.argon2", code: 400, userInfo: ["Error reason": "Invalid salt format"])
+      reject("E_ARGON2", "Invalid salt format", error)
+      return
     }
-
-    let rawHash = rawResult.hexStringValue();
-    let encodedHash = encodedResult.stringValue();
-
-    let resultDictionary: NSDictionary = [
-        "rawHash" : rawHash,
-        "encodedHash" : encodedHash,
-    ]
-    resolve(resultDictionary);
+    
+    let saltObject = Salt(bytes: saltData)
+    
+    do {
+      // Generate hash using Argon2Swift
+      let result = try Argon2Swift.hashPasswordString(
+        password: password,
+        salt: saltObject,
+        iterations: iterations,
+        memory: memory,
+        parallelism: parallelism,
+        length: hashLength,
+        type: mode,
+        version: .V13
+      )
+      
+      // Get encoded and raw hash values
+      let encodedHash = result.encodedString()
+      let rawHash = result.hexString()
+      
+      let resultDictionary: NSDictionary = [
+        "rawHash": rawHash,
+        "encodedHash": encodedHash,
+      ]
+      resolve(resultDictionary)
+      
+    } catch {
+      let nsError = NSError(domain: "com.poowf.argon2", code: 200, userInfo: ["Error reason": "Failed to generate argon2 hash: \(error.localizedDescription)"])
+      reject("E_ARGON2", "Failed to generate argon2 hash", nsError)
+    }
   }
 
-  func getArgon2Mode(mode: String) -> CatArgon2Mode {
-    var selectedMode: CatArgon2Mode;
+  func getArgon2Mode(mode: String) -> Argon2Type {
     switch mode {
-        case "argon2d":
-            selectedMode = CatArgon2Mode.argon2d;
-            break;
-        case "argon2i":
-            selectedMode = CatArgon2Mode.argon2i;
-            break;
-        case "argon2id":
-            selectedMode = CatArgon2Mode.argon2id;
-            break;
-        default:
-            selectedMode = CatArgon2Mode.argon2id;
-            break;
+    case "argon2d":
+      return .d
+    case "argon2i":
+      return .i
+    case "argon2id":
+      return .id
+    default:
+      return .i
     }
+  }
+}
 
-    return selectedMode;
+// Extension to handle hex string conversion for binary salt support
+extension Data {
+  init?(hexString: String) {
+    let length = hexString.count
+    if length & 1 != 0 {
+      return nil
+    }
+    var data = Data()
+    var index = hexString.startIndex
+    for _ in 0..<length/2 {
+      let nextIndex = hexString.index(index, offsetBy: 2)
+      if let b = UInt8(hexString[index..<nextIndex], radix: 16) {
+        data.append(b)
+      } else {
+        return nil
+      }
+      index = nextIndex
+    }
+    self = data
   }
 }
