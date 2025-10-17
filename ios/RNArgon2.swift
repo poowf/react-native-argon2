@@ -70,7 +70,7 @@ class RNArgon2: NSObject {
     case "argon2id":
       return .id
     default:
-      return .i
+      return .id
     }
   }
 }
