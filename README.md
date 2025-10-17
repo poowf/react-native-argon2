@@ -2,7 +2,7 @@
 
 React Native Wrapper around native Argon2 implementations:
 
-iOS: [CatCrypto](//github.com/ImKcat/CatCrypto)
+iOS: [Argon2Swift](//github.com/tmthecoder/Argon2Swift)
 
 Android: [argon2kt](//github.com/lambdapioneer/argon2kt)
 
