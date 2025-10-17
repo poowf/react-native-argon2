@@ -16,7 +16,7 @@ class RNArgon2: NSObject {
     let memory = configDict["memory", default: 32 * 1024 ] as! Int
     let parallelism = configDict["parallelism", default: 1 ] as! Int
     let hashLength = configDict["hashLength", default: 32 ] as! Int
-    let mode = getArgon2Mode(mode: configDict["mode", default: "argon2i"] as! String)
+    let mode = getArgon2Mode(mode: configDict["mode", default: "argon2id"] as! String)
 
     let saltEncoding = configDict["saltEncoding"] as? String ?? "utf8"
     let saltData: Data?
