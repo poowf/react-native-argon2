@@ -2,7 +2,7 @@
 
 React Native Wrapper around native Argon2 implementations:
 
-iOS: [CatCrypto](//github.com/ImKcat/CatCrypto)
+iOS: [Argon2Swift](//github.com/tmthecoder/Argon2Swift)
 
 Android: [argon2kt](//github.com/lambdapioneer/argon2kt)
 
@@ -33,16 +33,17 @@ const { rawHash, encodedHash } = result;
 ### Input
 The package takes in the following variables:
 
-| Parameter           | Type    |
-|---------------------|---------|
-| password            | string  |
-| salt                | string  |
-| config              | object  |
-| config.iterations   | integer |
-| config.memory       | integer |
-| config.parallelism  | integer |
-| config.hashLength   | integer |
-| config.mode         | string  |
+| Parameter           | Type    | Description |
+|---------------------|---------|-------------|
+| password            | string  |             |
+| salt                | string  |             |
+| config              | object  |             |
+| config.iterations   | integer |             |
+| config.memory       | integer |             |
+| config.parallelism  | integer |             |
+| config.hashLength   | integer |             |
+| config.mode         | string  |             |
+| config.saltEncoding | 'hex' \| 'utf8' | Optional. 'utf8' (default, for backward compatibility) or 'hex'. Use 'hex' to provide a hexadecimal-encoded salt string. |
 
 You are not required to configure the third parameter which is the `config` object, however you do have to provide an empty object to it if you are not changing any of the values. You can set config values with the following example:
 

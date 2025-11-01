@@ -29,11 +29,44 @@ public class RNArgon2Module extends ReactContextBaseJavaModule {
         return "RNArgon2";
     }
 
+    private byte[] hexStringToByteArray(String hex) {
+        if (hex == null || hex.isEmpty()) {
+            throw new IllegalArgumentException("Hex salt cannot be null or empty");
+        }
+        
+        // Validate hex format
+        if (hex.length() % 2 != 0) {
+            throw new IllegalArgumentException("Hex salt must have even length, got: " + hex.length());
+        }
+        
+        int len = hex.length();
+        byte[] result = new byte[len / 2];
+        
+        try {
+            for (int i = 0; i < len; i += 2) {
+                int high = Character.digit(hex.charAt(i), 16);
+                int low = Character.digit(hex.charAt(i + 1), 16);
+                
+                if (high == -1 || low == -1) {
+                    throw new IllegalArgumentException("Invalid hex character at position " + i + " in: " + hex);
+                }
+                
+                result[i / 2] = (byte) ((high << 4) + low);
+            }
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new IllegalArgumentException("Malformed hex string: " + hex, e);
+        }
+        
+        return result;
+    }
+
     @ReactMethod
     public void argon2(String password, String salt, ReadableMap config, Promise promise) {
         try {
             final byte[] passwordBytes = password.getBytes("UTF-8");
-            final byte[] saltBytes = salt.getBytes("UTF-8");
+            
+            String saltEncoding = config.hasKey("saltEncoding") ? config.getString("saltEncoding") : "utf8";
+            final byte[] saltBytes = ("hex".equalsIgnoreCase(saltEncoding)) ? hexStringToByteArray(salt) : salt.getBytes("UTF-8");
 
             Integer iterations = config.hasKey("iterations") ? new Integer(config.getInt("iterations")) : new Integer(2);
             Integer memory = config.hasKey("memory") ? new Integer(config.getInt("memory")) : new Integer(32 * 1024);
