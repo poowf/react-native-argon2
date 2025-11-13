@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.0](https://github.com/poowf/react-native-argon2/compare/v3.0.0...v4.0.0) (2025-11-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* Add support for salts of various lengths using hex encoding
+
+### Features
+
+* Add support for salts of various lengths using hex encoding ([5a43e83](https://github.com/poowf/react-native-argon2/commit/5a43e8353f9d96f8baec109a6f1dc85483c6c635))
+
 ## [3.0.0](https://github.com/poowf/react-native-argon2/compare/v2.0.1...v3.0.0) (2025-10-08)
 
 
