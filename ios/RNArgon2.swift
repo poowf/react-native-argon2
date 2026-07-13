@@ -10,7 +10,7 @@ class RNArgon2: NSObject {
 
   @objc
   func argon2(_ password: String, salt: String, config: NSDictionary? = nil, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
-    let configDict = config as! Dictionary<String,Any>
+    let configDict = (config as? Dictionary<String, Any>) ?? [:]
 
     let iterations = configDict["iterations", default: 2 ] as! Int
     let memory = configDict["memory", default: 32 * 1024 ] as! Int
@@ -58,6 +58,21 @@ class RNArgon2: NSObject {
     } catch {
       let nsError = NSError(domain: "com.poowf.argon2", code: 200, userInfo: ["Error reason": "Failed to generate argon2 hash: \(error.localizedDescription)"])
       reject("E_ARGON2", "Failed to generate argon2 hash", nsError)
+    }
+  }
+  
+  @objc
+  func verify(_ password: String, encodedHash: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
+    do {
+      // Verify the password against the encoded hash
+      let isValid = try Argon2Swift.verifyHashString(
+        password: password,
+        hash: encodedHash
+      )
+      resolve(isValid)
+    } catch {
+      let nsError = NSError(domain: "com.poowf.argon2", code: 300, userInfo: ["Error reason": "Failed to verify argon2 hash: \(error.localizedDescription)"])
+      reject("E_ARGON2", "Failed to verify argon2 hash", nsError)
     }
   }
 

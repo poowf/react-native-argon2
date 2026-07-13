@@ -20,4 +20,11 @@ declare function Argon2(
   options?: Argon2Options
 ): Promise<Argon2Result>;
 
+declare function verify(
+  password: string,
+  encodedHash: string,
+): Promise<boolean>;
+
 export default Argon2;
+
+export { verify };
